@@ -1,0 +1,28 @@
+{
+  "name": "sweets-n-honey",
+  "version": "1.0.0",
+  "description": "MP war for sweets and honey",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tgmf/sweets-n-honey.git"
+  },
+  "keywords": [
+    "chess",
+    "multiplayer",
+    "game"
+  ],
+  "author": "tgmf",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tgmf/sweets-n-honey/issues"
+  },
+  "homepage": "https://github.com/tgmf/sweets-n-honey#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0"
+  }
+}

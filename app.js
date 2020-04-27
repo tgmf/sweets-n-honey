@@ -22,4 +22,24 @@ io.on("connection", function (socket) {
     socket.on("move", function (msg) {
         socket.broadcast.emit("move", msg);
     });
+
+    // Called when the client calls socket.emit('move')
+    socket.on("default", function (msg) {
+        socket.broadcast.emit("default", msg);
+    });
+
+    // Called when the client calls socket.emit('move')
+    socket.on("clear", function (msg) {
+        socket.broadcast.emit("clear", msg);
+    });
+
+    // Called when the client calls socket.emit('move')
+    socket.on("start", function (msg) {
+        socket.broadcast.emit("start", msg);
+    });
+
+    // Called when the client calls socket.emit('move')
+    socket.on("restart", function (msg) {
+        socket.broadcast.emit("restart", msg);
+    });
 });

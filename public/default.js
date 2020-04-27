@@ -1,36 +1,29 @@
 var board;
 var game;
 var count = 0;
-var socket = io();
 
 window.onload = function () {
     initGame();
 };
 
+var socket = io();
+
 $("#defaultBtn").on("click", function () {
-    console.log("defClick");
     board.start();
     socket.emit("default");
 });
 $("#clearBtn").on("click", function () {
-    console.log("clearClick");
     board.clear();
     socket.emit("clear");
 });
 $("#startBtn").on("click", function () {
-    console.log("startClick");
     startGame();
     socket.emit("start");
 });
 $("#restartBtn").on("click", function () {
-    console.log("restartClick");
     initGame(true);
     socket.emit("restart");
 });
-
-window.onclick = function (e) {
-    socket.emit("message");
-};
 
 var initGame = function (restart) {
     count += 1;
@@ -89,24 +82,22 @@ var handleMove = function (source, target) {
 };
 
 socket.on("move", function (msg) {
-    console.log("socket - move");
     game.move(msg);
     board.position(game.fen()); // fen is the board layout
 });
 
-socket.on("default", function (msg) {
-    console.log("socket - default");
+socket.on("default", function () {
     board.start();
 });
 
-socket.on("clear", function (msg) {
+socket.on("clear", function () {
     board.clear();
 });
 
-socket.on("start", function (msg) {
+socket.on("start", function () {
     startGame();
 });
 
-socket.on("restart", function (msg) {
+socket.on("restart", function () {
     initGame(true);
 });

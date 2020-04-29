@@ -2,19 +2,103 @@
 <html>
     <head>
         <title>Sweets&Honey</title>
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+            integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+            crossorigin="anonymous"
+        />
         <link rel="stylesheet" href="lib/chessboard-1.0.0.min.css" />
         <link rel="stylesheet" href="/default.css" />
+
         <script src="lib/jquery-3.5.0.min.js"></script>
+        <script
+            src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"
+        ></script>
         <script src="lib/socket.io.js"></script>
         <script src="lib/chess.js"></script>
         <script src="lib/chessboard-1.0.0.js"></script>
     </head>
-    <body>
-        <div id="board" style="width: 400px;"></div>
-        <button id="defaultBtn">Default Position</button>
-        <button id="clearBtn">Clear Board</button>
-        <button id="startBtn">Start Game</button>
-        <button id="restartBtn">Restart Game</button>
+    <body style="display: flex; flex-direction: column;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 m-auto">
+                    <p>
+                        Max 40<br />
+                        Current White: <span id="currenW"></span><br />
+                        Current Black: <span id="currenB"></span><br />
+                        Pawn 1<br />
+                        Knight ~3<br />
+                        Bishop ~3,5<br />
+                        Castle ~5<br />
+                        Queen ~9<br />
+                        King ∞
+                    </p>
+                </div>
+                <div class="col-md-5 m-auto">
+                    <div
+                        id="moveFlag"
+                        style="height: 148px; display: block; width: 100%;"
+                    ></div>
+                    <div id="board" style="width: 100%; display: block;"></div>
+                </div>
+                <div class="col-md-3 m-auto">History:</div>
+            </div>
+            <div class="row justify-content-center mt-5">
+                <div class="col text-center">
+                    <button
+                        id="defaultBtn"
+                        type="button"
+                        class="btn btn-outline-dark"
+                    >
+                        Default Position
+                    </button>
+                    <button
+                        id="clearBtn"
+                        type="button"
+                        class="btn btn-outline-danger"
+                    >
+                        Clear Board
+                    </button>
+                    <button
+                        id="startBtn"
+                        type="button"
+                        class="btn btn-outline-success"
+                    >
+                        Start Game
+                    </button>
+                    <div class="btn-group btn-group-toggle toggle-first-move">
+                        <button data-color="w" class="btn btn-secondary active">
+                            White
+                        </button>
+                        <button data-color="b" class="btn btn-secondary">
+                            Black
+                        </button>
+                    </div>
+                    <button
+                        id="restartBtn"
+                        type="button"
+                        class="btn btn-outline-dark"
+                    >
+                        Restart Game
+                    </button>
+                    <button
+                        id="flipBtn"
+                        type="button"
+                        class="btn btn-outline-dark"
+                    >
+                        Flip the Board
+                    </button>
+                </div>
+            </div>
+        </div>
     </body>
     <script src="/default.js"></script>
 </html>

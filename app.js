@@ -18,28 +18,31 @@ var io = require("socket.io")(http);
 io.on("connection", function (socket) {
     console.log("new connection");
 
-    // Called when the client calls socket.emit('move')
     socket.on("move", function (msg) {
         socket.broadcast.emit("move", msg);
     });
 
-    // Called when the client calls socket.emit('move')
     socket.on("default", function (msg) {
         socket.broadcast.emit("default", msg);
     });
 
-    // Called when the client calls socket.emit('move')
     socket.on("clear", function (msg) {
         socket.broadcast.emit("clear", msg);
     });
 
-    // Called when the client calls socket.emit('move')
     socket.on("start", function (msg) {
         socket.broadcast.emit("start", msg);
     });
 
-    // Called when the client calls socket.emit('move')
     socket.on("restart", function (msg) {
         socket.broadcast.emit("restart", msg);
+    });
+
+    socket.on("placement", function (msg) {
+        socket.broadcast.emit("placement", msg);
+    });
+
+    socket.on("toggleFirstMove", function (msg) {
+        socket.broadcast.emit("toggleFirstMove", msg);
     });
 });

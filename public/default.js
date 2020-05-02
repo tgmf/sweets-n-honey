@@ -29,6 +29,10 @@ var initGame = function (restart) {
     game = new Chess();
     setFlag(firstMove);
 
+    window.onresize = function () {
+        this.board.resize();
+    };
+
     $("#defaultBtn").show();
     $("#clearBtn").show();
     $("#startBtn").show();
@@ -41,24 +45,25 @@ var startGame = function () {
     var position = board.position();
     game.clear();
     board.destroy();
-    console.log("startStart: ", game, board);
     var cfg = {
         draggable: true,
         position: position,
         onDrop: handleMove,
+        onSnapEnd: onSnapEnd,
     };
     board = new ChessBoard("board", cfg);
     game = new Chess(board.fen() + " " + firstMove + " KQkq - 0 1");
-    console.log(board.fen());
     console.log(game.fen());
     setFlag(firstMove);
-
-    console.log("startEnd: ", game, board);
+    console.log(game, board);
     $("#defaultBtn").hide();
     $("#clearBtn").hide();
     $("#startBtn").hide();
     $(".toggle-first-move").hide();
     $("#restartBtn").show();
+    if (game.game_over()) {
+        alert("T-T");
+    }
     console.log(game.insufficient_material());
 };
 
@@ -71,30 +76,99 @@ function onDrop(source, target, piece, newPos, oldPos, orientation) {
     console.log("Orientation: " + orientation);
     console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     socket.emit("placement", Chessboard.objToFen(newPos));
+    getCount(Chessboard.objToFen(newPos));
 }
+
+var onSnapEnd = function () {
+    board.position(game.fen());
+};
+
+var getCount = function (position) {
+    var countW = 0,
+        countB = 0,
+        i = position.length;
+    while (i--) {
+        switch (position[i]) {
+            case "p":
+                countB += 1;
+                break;
+            case "r":
+                countB += 5;
+                break;
+            case "n":
+                countB += 3;
+                break;
+            case "b":
+                countB += 3.5;
+                break;
+            case "q":
+                countB += 9;
+                break;
+            case "P":
+                countW += 1;
+                break;
+            case "R":
+                countW += 5;
+                break;
+            case "N":
+                countW += 3;
+                break;
+            case "B":
+                countW += 3.5;
+                break;
+            case "Q":
+                countW += 9;
+                break;
+        }
+    }
+    $("#currenW").text(countW);
+    $("#currenB").text(countB);
+};
 
 // called when a player makes a move on the board UI
 var handleMove = function (source, target) {
-    var move = game.move({ from: source, to: target });
-    console.log(move);
+    var move = game.move({ from: source, to: target, promotion: "q" });
     if (move === null) return "snapback";
     else {
         socket.emit("move", move);
-        setFlag(move.color == "w" ? "b" : "w");
+        renderMoveHistory(game.history());
+        getCount(board.fen());
+        if (game.game_over()) {
+            alert("T-T");
+        } else {
+            setFlag(move.color == "w" ? "b" : "w");
+        }
     }
 };
 
 var setFlag = function (color) {
-    if (color == "w") $("#moveFlag").css("background-color", "white");
-    else $("#moveFlag").css("background-color", "black");
+    if (color == "w") $("#moveFlag").css("background-color", "#FFEB3B");
+    else $("#moveFlag").css("background-color", "#BC9337");
+};
+
+var renderMoveHistory = function (moves) {
+    var historyElement = $("#moveHistory").empty();
+    historyElement.empty();
+    for (var i = 0; i < moves.length; i = i + 2) {
+        historyElement.append(
+            "<span>" +
+                moves[i] +
+                " " +
+                (moves[i + 1] ? moves[i + 1] : " ") +
+                "</span><br>"
+        );
+    }
+    historyElement.scrollTop(historyElement[0].scrollHeight);
 };
 
 $("#defaultBtn").on("click", function () {
     board.start();
+    getCount(board.fen());
     socket.emit("default");
 });
 $("#clearBtn").on("click", function () {
     board.clear();
+    getCount(board.fen());
     socket.emit("clear");
 });
 $("#startBtn").on("click", function () {
@@ -103,6 +177,7 @@ $("#startBtn").on("click", function () {
 });
 $("#restartBtn").on("click", function () {
     initGame(true);
+    getCount(board.fen());
     socket.emit("restart");
 });
 $("#flipBtn").on("click", function () {
@@ -118,20 +193,29 @@ $(".toggle-first-move button").on("click", function () {
 
 socket.on("placement", function (position) {
     board.position(position);
+    getCount(board.fen());
 });
 
 socket.on("move", function (msg) {
     game.move(msg);
     board.position(game.fen()); // fen is the board layout
-    setFlag(msg.color == "w" ? "b" : "w");
+    getCount(board.fen());
+    renderMoveHistory(game.history());
+    if (game.game_over()) {
+        alert("T-T");
+    } else {
+        setFlag(msg.color == "w" ? "b" : "w");
+    }
 });
 
 socket.on("default", function () {
     board.start();
+    getCount(board.fen());
 });
 
 socket.on("clear", function () {
     board.clear();
+    getCount(board.fen());
 });
 
 socket.on("start", function () {
@@ -140,6 +224,7 @@ socket.on("start", function () {
 
 socket.on("restart", function () {
     initGame(true);
+    getCount(board.fen());
 });
 
 socket.on("toggleFirstMove", function (msg) {

@@ -29,27 +29,30 @@
     <body style="display: flex; flex-direction: column;">
         <div class="container">
             <div class="row">
-                <div class="col-md-3 m-auto">
+                <div class="col-12 col-md-3 m-auto">
                     <p>
                         Max 40<br />
-                        Current White: <span id="currenW"></span><br />
-                        Current Black: <span id="currenB"></span><br />
+                        Bees: <span id="currenW">0</span><br />
+                        Ants: <span id="currenB">0</span><br />
                         Pawn 1<br />
                         Knight ~3<br />
                         Bishop ~3,5<br />
-                        Castle ~5<br />
+                        Rook ~5<br />
                         Queen ~9<br />
                         King ∞
                     </p>
                 </div>
-                <div class="col-md-5 m-auto">
+                <div class="col-12 col-md-9 col-lg-5 m-auto">
                     <div
                         id="moveFlag"
                         style="height: 148px; display: block; width: 100%;"
                     ></div>
                     <div id="board" style="width: 100%; display: block;"></div>
                 </div>
-                <div class="col-md-3 m-auto">History:</div>
+                <div class="d-none d-lg-block col-lg-3 m-auto">
+                    <p>History:</p>
+                    <div id="moveHistory" class="move-history"></div>
+                </div>
             </div>
             <div class="row justify-content-center mt-5">
                 <div class="col text-center">
@@ -76,10 +79,10 @@
                     </button>
                     <div class="btn-group btn-group-toggle toggle-first-move">
                         <button data-color="w" class="btn btn-secondary active">
-                            White
+                            Bees
                         </button>
                         <button data-color="b" class="btn btn-secondary">
-                            Black
+                            Ants
                         </button>
                     </div>
                     <button

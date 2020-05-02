@@ -6,5 +6,15 @@ body {
 }
 
 #gameBoard {
-    width: 400px;
+    width: 100%;
+}
+
+.white-1e1d7 {
+    background-color: #ffeb3b;
+    color: #bc9337;
+}
+
+.black-3c85d {
+    background-color: #bc9337;
+    color: #ffeb3b;
 }
